@@ -1,6 +1,8 @@
 const express = require("express");
+const cors = require("cors"); // ✅ fixed
 const app = express();
 
+app.use(cors()); // ✅ important
 app.use(express.json());
 
 // Simple route
