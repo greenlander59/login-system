@@ -16,6 +16,8 @@ async function login() {
 
   // ✅ NEW PART (redirect)
   if (data.message.includes("successful")) {
+    localStorage.setItem("loggedIn", "true");
+    localStorage.setItem("username", username); // ✅ save username
     window.location.href = "dashboard.html";
   }
 }
