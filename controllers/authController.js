@@ -1,14 +1,13 @@
+const User = require("../models/user"); // adjust if needed
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const User = require("../User");
-const bcrypt = require("bcrypt");
 
-// Signup
+// ✅ SIGNUP
 exports.signup = async (req, res) => {
-  const { username, password } = req.body;
-
   try {
-    const existingUser = await User.findOne({ username });
+    const { username, password } = req.body;
 
+    const existingUser = await User.findOne({ username });
     if (existingUser) {
       return res.json({ message: "User already exists ❌" });
     }
@@ -22,40 +21,41 @@ exports.signup = async (req, res) => {
 
     await newUser.save();
 
-    res.json({ message: "User saved securely ✅" });
-  } catch (error) {
-    res.json({ message: "Error saving user ❌" });
+    res.json({ message: "User registered successfully ✅" });
+  } catch (err) {
+    console.log(err);
+    res.json({ message: "Error in signup ❌" });
   }
 };
 
-// Login
+// ✅ LOGIN
 exports.login = async (req, res) => {
-  const { username, password } = req.body;
-
   try {
-    const user = await User.findOne({ username });
+    const { username, password } = req.body;
 
+    const user = await User.findOne({ username });
     if (!user) {
       return res.json({ message: "User not found ❌" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
-
-    if (isMatch) {
-      const token = jwt.sign(
-        { userId: user._id, username: user.username },
-        process.env.JWT_SECRET,
-        { expiresIn: "30s" },
-      );
-
-      res.json({
-        message: "Login successful ✅",
-        token: token,
-      });
-    } else {
-      res.json({ message: "Invalid credentials ❌" });
+    if (!isMatch) {
+      return res.json({ message: "Invalid password ❌" });
     }
-  } catch (error) {
-    res.json({ message: "Error during login ❌" });
+
+    // 🔐 CREATE TOKEN
+    const token = jwt.sign(
+      { userId: user._id, username: user.username },
+      process.env.JWT_SECRET,
+      { expiresIn: "30s" },
+    );
+
+    res.json({
+      message: "Login successful ✅",
+      token: token,
+    });
+  } catch (err) {
+    console.log(err);
+    res.json({ message: "Error in login ❌" });
   }
 };

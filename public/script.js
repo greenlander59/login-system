@@ -6,6 +6,7 @@ async function login() {
     const btn = document.querySelector("button");
     btn.innerText = "Loading...";
     btn.disabled = true;
+
     const response = await fetch("http://localhost:3000/login", {
       method: "POST",
       headers: {
@@ -15,17 +16,17 @@ async function login() {
     });
 
     const data = await response.json();
+
     btn.innerText = "Login";
     btn.disabled = false;
 
     document.getElementById("result").innerText = data.message;
 
-    // ✅ SAVE TOKEN
+    // ✅ SAVE TOKEN + REDIRECT
     if (data.token) {
       localStorage.setItem("token", data.token);
       localStorage.setItem("username", username);
 
-      // redirect
       window.location.href = "dashboard.html";
     }
   } catch (error) {
@@ -33,6 +34,8 @@ async function login() {
     alert("Error ❌");
   }
 }
+
+// ✅ LOGOUT
 function logout() {
   localStorage.removeItem("token");
   localStorage.removeItem("username");

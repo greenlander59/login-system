@@ -122,8 +122,12 @@ function initDashboard() {
       }
 
       document.getElementById("message").innerText = data.message;
-      document.getElementById("userid").innerText =
-        "User ID: " + data.user.userId;
+document.getElementById("userid").innerText =
+  "User ID: " + data.user.userId;
+
+// ✅ show username from backend
+document.getElementById("welcome").innerText =
+  "Welcome " + data.user.username;
     })
     .catch((err) => {
       console.error(err);
