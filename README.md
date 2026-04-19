@@ -1,126 +1,79 @@
-# 🚀 Full Stack Authentication System (Node.js + MongoDB + JWT)
+# 🔐 Login System (Node.js + JWT + MongoDB)
 
-## 📌 Project Overview
-
-This project is a complete _secure authentication system_ built with:
-
-- Signup
-- Login
-- Password hashing (bcrypt)
-- JWT authentication
-- Protected routes
-- Frontend + Backend integration
+A complete authentication system with login, register, JWT session, and protected dashboard.
 
 ---
 
-## 🧱 Tech Stack
+## 🚀 Features
+
+- User Registration
+- User Login
+- Password Hashing (bcrypt)
+- JWT Authentication
+- Protected Dashboard
+- Auto Login (token check)
+- Logout System
+- Session Expiry Handling
+- Clean UI with Loader
+
+---
+
+## 🛠 Tech Stack
 
 - Node.js
 - Express.js
 - MongoDB (Mongoose)
-- Bcrypt (password security)
-- JSON Web Token (JWT)
-- HTML, CSS, JavaScript
-- Git & GitHub
-
----
-
-## ✅ Features Implemented
-
-### 🔐 Authentication (Backend)
-
-- User Signup (stored in MongoDB)
-- Password hashing using bcrypt
-- Secure Login with bcrypt.compare
-- JWT token generation on login
-- Protected routes using middleware
-- Duplicate user prevention
-
-### 🔒 Protected Routes
-
-- /dashboard (requires token)
-- /profile (requires token)
-
-### 🖥️ Frontend
-
-- Login page (index.html)
-- Dashboard (dashboard.html)
-- Token stored in localStorage
-- Auto login (skip login page if already logged in)
-- Logout system (token removed)
-- Protected dashboard (no direct access)
-
-### 🧪 Testing
-
-- API tested using Thunder Client
-- Browser-based login + dashboard working
+- JWT (jsonwebtoken)
+- bcrypt
 
 ---
 
 ## 📁 Project Structure
 
-## project-folder/ │ ├── controllers/ │ └── authController.js │ ├── routes/ │ └── authRoutes.js │ ├── middleware/ │ └── authMiddleware.js │ ├── public/ │ ├── index.html │ ├── dashboard.html │ ├── script.js │ └── style.css │ ├── User.js ├── server.js ├── package.json ├── .env └── README.md
-
-## 🔌 API Endpoints
-
-### Signup
-
-POST /signup
-
-### Login
-
-POST /login  
-Returns JWT token
-
-### Protected Routes
-
-GET /dashboard  
-GET /profile
-
-(Header required)
-Authorization: Bearer TOKEN
+login-system/ │ ├── controllers/ │ └── authController.js │ ├── middleware/ │ └── authMiddleware.js │ ├── models/ │ └── user.js │ ├── routes/ │ └── authRoutes.js │ ├── public/ │ ├── index.html │ ├── dashboard.html │ ├── script.js │ └── style.css │ ├── .env ├── server.js ├── package.json └── README.md
 
 ---
 
-## 🔐 Security Features
+## ⚙️ Installation
 
-- Password hashing (bcrypt)
-- JWT authentication
-- Protected routes
-- Token-based access control
-- Frontend route protection
+### 1. Clone repo
+
+```bash
+git clone https://github.com/YOUR-USERNAME/login-system.git
+cd login-system
+2. Install dependencies
+Bash
+npm install
+3. Create .env file
+Environment
+PORT=3000
+MONGO_URI=your_mongodb_connection
+JWT_SECRET=your_secret_key
+4. Run server
+Bash
+node server.js
+🌐 Usage
+Open browser:
+
+http://localhost:3000
+Register new user
+Login
+Access dashboard
+🔐 Security
+Passwords are hashed using bcrypt
+JWT used for authentication
+Protected routes with middleware
+📸 Screenshots
+(Add your screenshots here later)
+📌 Future Improvements
+Add Email field
+Add User Roles (Admin/User)
+Add Profile Page
+Deploy online
+👨‍💻 Author
+Developed by YOU 🚀
+⭐ License
+Free to use and modify
 
 ---
-
-## 🧠 Concepts Learned
-
-- Express routing & middleware
-- MongoDB & Mongoose
-- Authentication systems
-- JWT token handling
-- Async/Await
-- Debugging real errors
-- Git workflow
-
----
-
-## ⚠️ Current Limitations
-
-- No token expiration handling on frontend
-- No refresh tokens
-- Basic UI only
-
----
-
-## 🚀 Next Improvements
-
-- Token expiry auto logout
-- Show username on dashboard
-- Better UI/UX
-- Deploy to cloud (Render / Vercel)
-
----
-
-## 👨‍💻 Author
-
-Built as part of learning journey toward becoming a full stack & AI-first developer(Muhammad Saqib).
+```
