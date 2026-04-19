@@ -3,6 +3,9 @@ async function login() {
   const password = document.getElementById("password").value;
 
   try {
+    const btn = document.querySelector("button");
+    btn.innerText = "Loading...";
+    btn.disabled = true;
     const response = await fetch("http://localhost:3000/login", {
       method: "POST",
       headers: {
@@ -12,8 +15,10 @@ async function login() {
     });
 
     const data = await response.json();
+    btn.innerText = "Login";
+    btn.disabled = false;
 
-    alert(data.message);
+    document.getElementById("result").innerText = data.message;
 
     // ✅ SAVE TOKEN
     if (data.token) {

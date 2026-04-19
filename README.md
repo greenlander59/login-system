@@ -1,13 +1,14 @@
-# 🚀 Full Stack Login System (Node.js + MongoDB)
+# 🚀 Full Stack Authentication System (Node.js + MongoDB + JWT)
 
 ## 📌 Project Overview
 
-This project is a complete authentication system with:
+This project is a complete _secure authentication system_ built with:
 
 - Signup
 - Login
 - Password hashing (bcrypt)
-- MongoDB database
+- JWT authentication
+- Protected routes
 - Frontend + Backend integration
 
 ---
@@ -18,39 +19,47 @@ This project is a complete authentication system with:
 - Express.js
 - MongoDB (Mongoose)
 - Bcrypt (password security)
-- HTML, CSS, JavaScript (frontend)
+- JSON Web Token (JWT)
+- HTML, CSS, JavaScript
 - Git & GitHub
 
 ---
 
 ## ✅ Features Implemented
 
-### 🔐 Authentication
+### 🔐 Authentication (Backend)
 
 - User Signup (stored in MongoDB)
 - Password hashing using bcrypt
 - Secure Login with bcrypt.compare
+- JWT token generation on login
+- Protected routes using middleware
 - Duplicate user prevention
+
+### 🔒 Protected Routes
+
+- /dashboard (requires token)
+- /profile (requires token)
 
 ### 🖥️ Frontend
 
 - Login page (index.html)
 - Dashboard (dashboard.html)
-- Session handling using localStorage
-- Protected route (no direct dashboard access)
+- Token stored in localStorage
+- Auto login (skip login page if already logged in)
+- Logout system (token removed)
+- Protected dashboard (no direct access)
 
 ### 🧪 Testing
 
 - API tested using Thunder Client
-- Browser-based login working
+- Browser-based login + dashboard working
 
 ---
 
 ## 📁 Project Structure
 
-project-folder/ │ ├── server.js # Main backend server ├── User.js # User model (Mongoose schema) ├── users.json # Old file-based DB (deprecated) ├── index.html # Login page ├── dashboard.html # Protected dashboard ├── script.js # Frontend logic ├── style.css # Styling ├── package.json # Dependencies └── README.md # Project documentation
-
----
+## project-folder/ │ ├── controllers/ │ └── authController.js │ ├── routes/ │ └── authRoutes.js │ ├── middleware/ │ └── authMiddleware.js │ ├── public/ │ ├── index.html │ ├── dashboard.html │ ├── script.js │ └── style.css │ ├── User.js ├── server.js ├── package.json ├── .env └── README.md
 
 ## 🔌 API Endpoints
 
@@ -58,64 +67,60 @@ project-folder/ │ ├── server.js # Main backend server ├── User.js 
 
 POST /signup
 
-Body:
-{
-"username": "user",
-"password": "1234"
-}
-
-Response:
-User saved securely ✅
-
----
-
 ### Login
 
-POST /login
+POST /login  
+Returns JWT token
 
-Body:
-{
-"username": "user",
-"password": "1234"
-}
+### Protected Routes
 
-Response:
-Login successful ✅
+GET /dashboard  
+GET /profile
+
+(Header required)
+Authorization: Bearer TOKEN
 
 ---
 
-## 🧠 Important Concepts Learned
+## 🔐 Security Features
 
-- Express server setup
-- MongoDB connection
-- Mongoose schema & model
-- Async/Await handling
 - Password hashing (bcrypt)
-- API creation & testing
+- JWT authentication
+- Protected routes
+- Token-based access control
+- Frontend route protection
+
+---
+
+## 🧠 Concepts Learned
+
+- Express routing & middleware
+- MongoDB & Mongoose
+- Authentication systems
+- JWT token handling
+- Async/Await
 - Debugging real errors
-- Git & GitHub workflow
+- Git workflow
 
 ---
 
 ## ⚠️ Current Limitations
 
-- No JWT authentication yet
-- No input validation
-- No environment variables (.env)
-- Basic frontend only
+- No token expiration handling on frontend
+- No refresh tokens
+- Basic UI only
 
 ---
 
-## 🚀 Next Steps (Planned)
+## 🚀 Next Improvements
 
-- Project folder structure (MVC)
-- Separate routes & controllers
-- Add .env for security
-- JWT authentication (tokens)
+- Token expiry auto logout
+- Show username on dashboard
 - Better UI/UX
+- Deploy to cloud (Render / Vercel)
 
 ---
 
 ## 👨‍💻 Author
 
-Built as part of learning journey toward becoming an AI-first full stack developer.
+Built as part of learning journey toward becoming a full stack & AI-first developer(Muhammad Saqib).
