@@ -2,23 +2,72 @@
 <html>
 <head>
   <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <h1>Dashboard 🎉</h1>
-  <h2 id="welcome"></h2>
-  <button onclick="logout()">Logout</button>
+  <!-- ✅ Loader -->
+  <div id="loader">
+    <div class="spinner"></div>
+    <p>Loading dashboard...</p>
+  </div>
 
- <script>
+  <!-- ✅ Dashboard Card (hidden first) -->
+  <div class="card" id="card" style="display:none;">
+    <h1>Dashboard 🎉</h1>
+
+    <div class="profile">
+      <div class="avatar">👤</div>
+      <h2 id="welcome"></h2>
+    </div>
+
+    <div class="info">
+      <p id="message"></p>
+      <p id="userid"></p>
+    </div>
+
+    <button onclick="logout()">Logout</button>
+  </div>
+
+<script>
+function initDashboard() {
+
   const token = localStorage.getItem("token");
+  const loader = document.getElementById("loader");
+  const card = document.getElementById("card");
+  const startTime = Date.now();
 
-  // ❌ No token → go login
+  // ❌ No token → redirect
   if (!token) {
     window.location.href = "index.html";
+    return;
   }
 
-  // ✅ Safe decode function
+  // ✅ Check expiry (FIXED)
+  function isTokenExpired(token) {
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      return payload.exp * 1000 < Date.now(); // ✅ FIXED (1000 not 1200)
+    } catch (e) {
+      return true;
+    }
+  }
+
+  // ❌ Expired token
+  if (isTokenExpired(token)) {
+    loader.innerHTML = "<p>Session expired ⏳ Redirecting...</p>";
+    card.style.display = "none";
+
+    setTimeout(() => {
+      localStorage.removeItem("token");
+      window.location.href = "index.html";
+    }, 1500);
+
+    return;
+  }
+
+  // ✅ Decode token
   function parseJwt(token) {
     try {
       return JSON.parse(atob(token.split(".")[1]));
@@ -29,24 +78,23 @@
 
   const payload = parseJwt(token);
 
-  // ❌ If token invalid → logout
   if (!payload) {
-    alert("Invalid session ❌");
     localStorage.removeItem("token");
     window.location.href = "index.html";
+    return;
   }
 
-  // ✅ Show username from token
+  // ✅ Show username
   document.getElementById("welcome").innerText =
     "Welcome " + payload.username;
 
   // ✅ Logout
-  function logout() {
+  window.logout = function () {
     localStorage.removeItem("token");
     window.location.href = "index.html";
-  }
+  };
 
-  // ✅ Call backend
+  // ✅ Fetch data
   fetch("http://localhost:3000/dashboard", {
     method: "GET",
     headers: {
@@ -55,22 +103,36 @@
   })
     .then((res) => res.json())
     .then((data) => {
-  console.log(data);
 
-  if (data.message.includes("Access denied")) {
-    window.location.href = "index.html";
-  } else {
-    // ✅ Show backend message
-    const msg = document.createElement("h3");
-    msg.innerText = data.message;
-    document.body.appendChild(msg);
+      const minTime = 1200;
+      const elapsed = Date.now() - startTime;
 
-    // ✅ Show user ID from backend
-    const userInfo = document.createElement("p");
-    userInfo.innerText = "User ID: " + data.user.userId;
-    document.body.appendChild(userInfo);
-  }
-});
+      setTimeout(() => {
+        loader.style.display = "none";
+        card.style.display = "block"; // ✅ SHOW CARD PROPERLY
+      }, Math.max(0, minTime - elapsed));
+
+      if (
+        data.message.includes("Access denied") ||
+        data.message.includes("Invalid")
+      ) {
+        localStorage.removeItem("token");
+        window.location.href = "index.html";
+        return;
+      }
+
+      document.getElementById("message").innerText = data.message;
+      document.getElementById("userid").innerText =
+        "User ID: " + data.user.userId;
+    })
+    .catch((err) => {
+      console.error(err);
+      loader.innerHTML = "<p>Something went wrong ❌</p>";
+    });
+}
+
+initDashboard();
 </script>
+
 </body>
 </html>
